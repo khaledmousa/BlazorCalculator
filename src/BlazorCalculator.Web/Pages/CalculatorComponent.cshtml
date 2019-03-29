@@ -1,0 +1,44 @@
+﻿@using BlazorCalculator.Web.ViewModels;
+
+<h2>Calculator</h2>
+
+<div class="input-group">
+    <input bind="@ViewModel.StatementInput" placeholder="@ViewModel.StatementPlaceholder" class="form-control" autofocus/>
+    <span class="input-group-btn">
+        <input class="btn btn-primary" type="submit" onclick="@ViewModel.AddStatement" value="@ViewModel.AddStatementCaption" />
+    </span>
+</div>
+
+@if (ViewModel.HasError)
+{
+    <div class="alert alert-danger" role="alert">@ViewModel.Error</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Statement</th>
+            <th scope="col">Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stmt in ViewModel.Statements)
+        {
+            <tr>
+                <td>@stmt.Statement</td>
+                @if (stmt.IsEvaluated)
+                {
+                    <td><b>@stmt.EvaluatedResult</b></td>
+                }
+                else
+                {
+                    <td><b>N/A</b></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@functions{
+    CalculatorViewModel ViewModel = new CalculatorViewModel();
+}
