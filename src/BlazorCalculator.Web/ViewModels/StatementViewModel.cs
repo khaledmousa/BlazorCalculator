@@ -53,6 +53,10 @@ namespace BlazorCalculator.Web.ViewModels
                 EvaluatedResult = result;
                 IsEvaluated = true;
             }
+            catch(CyclicVertexException ex)
+            {
+                throw;
+            }
             catch //not ideal .. maybe change the F# engine to return an evaluation result with true/false for IsEvaluated
             {
                 EvaluatedResult = default(T);

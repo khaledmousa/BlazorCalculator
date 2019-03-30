@@ -26,7 +26,7 @@ namespace BlazorCalculator.Web.ViewModels
         {
             try
             {
-                var statementViewModel = new StatementViewModel<decimal>(statement, _variableGraph, this);
+                var statementViewModel = new StatementViewModel<decimal>(statement, _variableGraph, this);                
 
                 var existing = _statements.FirstOrDefault(s => s.Id.Equals(statementViewModel.Id, StringComparison.OrdinalIgnoreCase));
                 if (existing != null) _statements.Remove(existing);
@@ -50,12 +50,13 @@ namespace BlazorCalculator.Web.ViewModels
 
         private void RefreshAssociatedStatements(StatementViewModel<decimal> addedStatement)
         {
-            if (addedStatement.IsEvaluated)
+            if (addedStatement?.IsEvaluated == true)
             {
                 foreach (var node in _variableGraph.GetLinkedNodes(addedStatement.Id).ToList())
                 {
                     var statement = _statements.FirstOrDefault(s => s.Id.Equals(node, StringComparison.OrdinalIgnoreCase));
                     statement?.RefreshResult();
+                    RefreshAssociatedStatements(statement);
                 }
             }
         }
